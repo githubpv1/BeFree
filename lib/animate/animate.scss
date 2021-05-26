@@ -1,0 +1,109 @@
+
+// ==== Animate.css 3.7.2 ====
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+// можо всё задать элементу или создать общий класс
+.yourElement {
+  animation-duration: 3s;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+}
+
+// или через дополнительные классы в HTML ниже
+@if 1 {
+
+.animated.infinite {
+  animation-iteration-count: infinite;
+}
+
+.animated.fast {
+  animation-duration: 800ms;
+}
+
+.animated.faster {
+  animation-duration: 500ms;
+}
+
+.animated.slow {
+  animation-duration: 2s;
+}
+
+.animated.slower {
+  animation-duration: 3s;
+}
+.animated.delay-1s {
+  animation-delay: 1s;
+}
+
+.animated.delay-2s {
+  animation-delay: 2s;
+}
+
+.animated.delay-3s {
+  animation-delay: 3s;
+}
+
+.animated.delay-4s {
+  animation-delay: 4s;
+}
+
+.animated.delay-5s {
+  animation-delay: 5s;
+}
+
+@media (print), (prefers-reduced-motion: reduce) {
+  .animated {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+    animation-iteration-count: 1 !important; 
+  }
+}
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+.fadeInRight {
+  animation-name: fadeInRight;
+}
+
+
+
+// ===== AOS - 2 =====
+
+[data-aos="fadeInRight"] {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+[data-aos="fadeInRight"].aos-animate {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+
+
+// == AOS - next + Animate.css ==
+
+[data-aos] {
+  visibility: hidden;
+}
+[data-aos].animated {
+  visibility: visible;
+}
+
+
+
+
+

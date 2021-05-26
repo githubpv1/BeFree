@@ -1,0 +1,20 @@
+
+// :root {
+  // --color-primary: hsl(220, 90%, 56%);
+// }
+
+// $color-text: black;
+$color-primary: #6D71F9;
+$color-hover: #5CDEDA;
+$color-active: #2DB6B1;
+$color-disable: #B8B9D0;
+
+%title-font {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 700;
+}
+
+// .title {
+//   @extend %title-font
+// }
+

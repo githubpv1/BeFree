@@ -1,0 +1,103 @@
+
+/* reset */
+
+* {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+:focus,
+:active {
+	outline: none;
+}
+
+a:focus,
+a:active {
+	outline: none;
+}
+
+a,
+a:visited {
+	display: inline-block;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+nav,
+footer,
+header,
+aside,
+main,
+section {
+	display: block;
+}
+
+input::-ms-clear {
+	display: none;
+}
+
+button {
+	cursor: pointer;
+	background-color: transparent;
+}
+
+button::-moz-focus-inner {
+	padding: 0;
+	border: 0;
+}
+
+ul li {
+	list-style: none;
+}
+
+img {
+	vertical-align: top;
+	max-width: 100%;
+	height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+	font-family: inherit;
+	font-size: inherit;
+}
+
+a,
+button {
+	color: inherit;
+}
+
+
+button:focus.focus,
+a:focus.focus,
+/* input[type="radio"]:focus.focus +label:before, */
+input[type="radio"]:focus.focus+label,
+input[type="checkbox"]:focus.focus+label,
+input[type="file"]:focus.focus+label {
+	box-shadow: white 0 0 0 2px, lightskyblue 0 0 0 5px;
+}
+
+html {
+	height: 100%;
+	width: 100%;
+	font-size: 100%;
+	-webkit-text-size-adjust: 100%;
+	-ms-overflow-style: scrollbar;
+}
+
+body {
+	height: 100%;
+	width: 100%;
+}
