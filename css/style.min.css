@@ -399,6 +399,7 @@ body {
   font-variant: normal;
   text-transform: none;
   line-height: 1;
+  vertical-align: middle;
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1374,6 +1375,10 @@ input:focus::placeholder {
 .user-link {
   display: none;
   line-height: 38px;
+}
+
+.user-link-mob img {
+  vertical-align: middle;
 }
 
 @media (min-width: 768px) {
