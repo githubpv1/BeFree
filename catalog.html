@@ -175,8 +175,8 @@
             <div class="col-md-6 col-xl-4 order-md-1 order-xl-0">
               <div class="filter__title">Страна</div>
 
-              <div class="select-wrap">
-                <select class="select" data-select aria-label="country" name="" form="" required>
+              <div class="select-wrap select1-wrap">
+                <select class="select select1" data-select aria-label="country" name="" form="" required>
                   <option class="invalid" value="" hidden>Не выбрано</option>
                   <option value="1">Вариант 1</option>
                   <option value="2">Вариант 2</option>
@@ -188,27 +188,27 @@
 
             <div class="col-6 col-xl-2">
               <div class="filter__title">Способы <br> оплаты</div>
-              <input class="check__input" id="check" type="checkbox" name="check" value="">
-              <label class="check__label" for="check">Online</label>
+              <input class="check__input filter__input-check" id="check" type="checkbox" name="check" value="">
+              <label class="check__label filter__label-check" for="check">Online</label>
 
-              <input class="check__input" id="check1" type="checkbox" name="check" value="" checked>
-              <label class="check__label" for="check1">Life (на месте)</label>
+              <input class="check__input filter__input-check" id="check1" type="checkbox" name="check" value="" checked>
+              <label class="check__label filter__label-check" for="check1">Life (на месте)</label>
 
-              <input class="check__input" id="check2" type="checkbox" name="check" value="" checked>
-              <label class="check__label" for="check2">Сертификат</label>
+              <input class="check__input filter__input-check" id="check2" type="checkbox" name="check" value="" checked>
+              <label class="check__label filter__label-check" for="check2">Сертификат</label>
             </div>
 
             <div class="col-6 col-xl-2">
               <div class="filter__title">Партнерские программы</div>
-              <input class="check__input" id="check3" type="checkbox" name="check" value="" checked>
-              <label class="check__label" for="check3">Есть программа</label>
+              <input class="check__input filter__input-check" id="check3" type="checkbox" name="check" value="" checked>
+              <label class="check__label filter__label-check" for="check3">Есть программа</label>
             </div>
 
             <div class="col-md-6 col-xl-4 order-md-1">
               <div class="filter__title">Сортировка</div>
 
-              <div class="select-wrap">
-                <select class="select" data-select aria-label="country" name="" form="" required>
+              <div class="select-wrap select1-wrap">
+                <select class="select select1" data-select aria-label="country" name="" form="" required>
                   <option class="invalid" value="" hidden>По популярности</option>
                   <option value="1">Вариант 1</option>
                   <option value="2">Вариант 2</option>
@@ -234,8 +234,8 @@
     <div class="container">
       <div class="row">
         <div class="col-xl-3">
-          <div class="select2-wrap">
-            <select class="select2" data-select aria-label="country" name="" form="" required>
+          <div class="select-wrap select2-wrap select-xl-wrap">
+            <select class="select select2 select-xl" data-select aria-label="country" name="" form="" required>
               <!-- <option class="invalid" value="" hidden>Все</option> -->
               <option class="icon-function" value="1">Все категории</option>
               <option class="icon-bear" value="2">Еда и рестораны</option>
@@ -525,6 +525,18 @@
 </div><!-- wrapper -->	
 
 
+<div class="dialog-backdrop" onclick="clickBtnClose(this)">
+  <div role="dialog" id="dialog-" aria-labelledby="dialog_label" aria-modal="true" class="hidden">
+    <div class="modal">
+  
+        <button onclick="closeDialog(this)" class="modal__btn-close" aria-label="Close">
+          <!-- <svg class="icon modal__icon-close"><use xlink:href="icon.svg#icon-close"></use></svg> -->
+        </button>
+  
+  
+    </div>  
+  </div>
+  </div>
 
 
 <!-- up -->
