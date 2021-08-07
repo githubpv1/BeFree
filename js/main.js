@@ -3,6 +3,32 @@
 objectFitImages();
 
 
+
+// ===== webp =====
+
+(function () {
+
+	function testWebP(callback) {
+
+		var webP = new Image();
+		webP.onload = webP.onerror = function () {
+			callback(webP.height == 2);
+		};
+		webP.src = "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA";
+	}
+
+	testWebP(function (support) {
+
+		if (support == true) {
+			document.querySelector('body').classList.add('webp');
+		} else {
+			document.querySelector('body').classList.add('no-webp');
+		}
+	});
+}());
+
+
+
 //сбрасываем :focus
 
 (function () {
@@ -534,8 +560,7 @@ google.maps.event.addDomListener(window, "load", initMap);
 
 
 
-
-// ==== select gibrid-3 ====
+// ==== select gibrid-4 ====
 
 (function () {
 	var natives = document.querySelectorAll('[data-select]');
@@ -549,10 +574,10 @@ google.maps.event.addDomListener(window, "load", initMap);
 		function select(i) {
 
 			var native = natives[i];
-			var nativeClass = native.getAttribute('class');
+			var nativeClass = native.classList;
 			var parent = native.parentElement;
-			var optionInvalid = native.querySelector('.invalid');
 
+			var optionInvalid = native.querySelector('.invalid');
 			var optionChecked = native.querySelector('option:checked');
 			var optionCheckedText = optionChecked.textContent;
 			var optionCheckedValue = optionChecked.value;
@@ -562,6 +587,20 @@ google.maps.event.addDomListener(window, "load", initMap);
 
 			createSelectCustom(native);
 
+
+			function createClass(addClass) {
+				if (nativeClass) {
+					var customClass = '';
+
+					for (var i = 0; i < nativeClass.length; i++) {
+
+						customClass = customClass + ' ' + nativeClass[i] + addClass;
+					}
+					return customClass;
+				}
+			}
+
+
 			function createSelectCustom(select) {
 				var options = select.querySelectorAll('option');
 
@@ -569,19 +608,21 @@ google.maps.event.addDomListener(window, "load", initMap);
 				var selectBtn;
 
 				if (optionInvalid) {
-					selectBtn = '<div class="' + nativeClass + '-custom__btn invalid">' + optionCheckedText + '</div>';
+					selectBtn = '<div class="' + createClass('-custom__btn') + ' invalid">' +
+						optionCheckedText + '</div>';
 				} else {
-					selectBtn = '<div class="' + nativeClass + '-custom__btn ' + selectedClass + '">' + optionCheckedText + '</div>';
+					selectBtn = '<div class="' + createClass('-custom__btn') + selectedClass + '">' +
+						optionCheckedText + '</div>';
 				}
 
 				parent.insertAdjacentHTML('beforeend',
-					'<div class="' + nativeClass + '-custom" aria-hidden="true">' +
+					'<div class="' + createClass('-custom') + '" aria-hidden="true">' +
 					selectBtn +
-					'<div class="' + nativeClass + '-custom__options">' + createCustomOptions(options) + '</div>' +
-					'</div></div>');
-
-
+					'<div class="' + createClass('-custom__options') + '">' +
+					createCustomOptions(options) + '' +
+					'</div></div></div>');
 			}
+
 
 			function createCustomOptions(options) {
 				if (options) {
@@ -601,7 +642,11 @@ google.maps.event.addDomListener(window, "load", initMap);
 
 						if (optionValue != '') {
 							var optionText = option.text;
-							customOptions = customOptions + '<div data-value="' + optionValue + '" class="' + nativeClass + '-custom__option ' + optionClass + ' ">' + optionText + '</div>';
+
+							customOptions = customOptions +
+								'<div data-value="' + optionValue +
+								'" class="' + createClass('-custom__option') +
+								' ' + optionClass + ' ">' + optionText + '</div>';
 						}
 					}
 					return customOptions;
@@ -651,6 +696,7 @@ google.maps.event.addDomListener(window, "load", initMap);
 				document.addEventListener("keydown", supportKeyboardNavigation);
 			}
 
+
 			function closeSelectCustom() {
 				selectCustom.classList.remove("isActive");
 				parent.classList.remove("isActive");
@@ -692,13 +738,13 @@ google.maps.event.addDomListener(window, "load", initMap);
 				}
 
 				selectCustomBtn.textContent = text;
-				selectCustomBtn.className = nativeClass + '-custom__btn ' + optionsClass[optionIndex];
+				selectCustomBtn.className = createClass('-custom__btn') + ' ' + optionsClass[optionIndex];
 				optionCheckedValue = value;
 			}
 
 
 			function watchClickOutside(e) {
-				var didClickedOutside = !selectCustom.contains(event.target);
+				var didClickedOutside = !selectCustom.contains(e.target);
 				if (didClickedOutside) {
 					closeSelectCustom();
 				}
@@ -825,10 +871,10 @@ $('.store__slider').slick({
 	var mq = window.matchMedia('(min-width: 1350px)');
 
 	mq.addListener(startSlider);
-	startSlider();
 
 	function startSlider() {
 		if (mq.matches) {
+			console.log('hi');
 			$('.stock__slider').slick({
 				prevArrow: $('.stock__prev'),
 				nextArrow: $('.stock__next'),
@@ -843,8 +889,110 @@ $('.store__slider').slick({
 			}
 		}
 	}
+
+
+	var target = document.querySelector('.stock');
+
+	if (target) {
+
+		var config = {
+			attributes: true,
+			attributeFilter: ['style'],
+		}
+
+		var observer = new MutationObserver(onMutate);
+
+		observer.observe(target, config);
+
+		function onMutate() {
+			startSlider();
+			observer.disconnect();
+		}
+	}
 }());
 
+
+
+// ====== validate and sendform ========
+
+(function () {
+	var form1 = document.getElementById('form_1');
+	var form2 = document.getElementById('form_2');
+	var reg = document.querySelectorAll('input[required]');
+
+	if (reg) {
+		for (var i = 0; i < reg.length; i++) {
+			var elem = reg[i];
+			elem.addEventListener('blur', check);
+			elem.addEventListener('focus', rezet);
+		}
+	}
+
+	if (form1) {
+		form1.addEventListener('submit', validate);
+	}
+	if (form2) {
+		// form2.addEventListener('submit', ajaxSend);
+		form2.addEventListener('submit', validate);
+	}
+
+	function rezet() {
+		var error = this.parentElement.querySelector('.error');
+		this.classList.remove('invalid');
+		error.classList.remove('active');
+		error.addEventListener('transitionend', function() {
+			if (!this.classList.contains('active')) {
+			this.innerHTML = '';
+			}
+	 });
+	}
+
+	function check() {
+		var error = this.parentElement.querySelector('.error');
+
+		if (!this.validity.valid) {
+			this.classList.add('invalid');
+			error.classList.add('active');
+			error.innerHTML = 'ошибка / неправильный формат';
+			if (this.validity.valueMissing || this.value === '') {
+				error.classList.add('active');
+				error.innerHTML = 'ошибка / заполните поле';
+			}
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	function validate(e) {			e.preventDefault();
+
+	}
+
+	function ajaxSend(e) {
+		e.preventDefault();
+		var el = this;
+		var error = validate.call(el, e);
+
+		if (error === 0) {
+			this.classList.add('sending');
+			var formData = new FormData(this);
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", this.getAttribute("action"));
+			xhr.send(formData);
+
+			xhr.onloadend = function () {
+				if (xhr.status == 200) {
+					el.classList.remove('sending');
+					el.reset();
+					// alert('Сообщение отправлено.');
+					// alert(xhr.response);  //ответ сервера
+				} else {
+					console.log('Ошибка' + this.status);
+				}
+			}
+		}
+	}
+}());
 
 
 
@@ -979,22 +1127,160 @@ $('.store__slider').slick({
 
 
 
-
-// ===== tabs cabinet =====
+// ===== tabs-spoiler cabinet =====
 
 (function () {
-  $(".tabs__list").on("click", ".tabs__btn:not(.active)", function () {
-    $(this)
-      .addClass("active")
-      .siblings()
-      .removeClass("active")
-      .closest(".tabs")
-      .find(".tabs__panel")
-      .slideUp(500)
-      // .removeClass("active")
-      .eq($(this).index())
-      // .addClass("active");
-      .slideDown(500);
-  });
+
+	function togglePanel() {
+		var $id = $(this).attr('data-tabs-btn');
+
+		var $index = $(this).closest('[data-tabs]')
+			.find('[data-tabs-btn="' + $id + '"]')
+			.removeClass('active').index(this);
+
+		$(this)
+			.addClass('active')
+			.closest('[data-tabs]')
+			.find('[data-tabs-panel="' + $id + '"]')
+			.slideUp(500)
+			// .removeClass('active')
+			.eq($index)
+			// .addClass('active');
+			.slideDown(500);
+	}
+
+
+	function closePanel() {
+		var $id = $(this).attr('data-tabs-btn');
+
+		$(this)
+			.removeClass('active')
+			.closest('[data-tabs]')
+			.find('[data-tabs-panel="' + $id + '"]')
+			.slideUp(500);
+		// .removeClass('active');
+	}
+
+
+	$('[data-tabs-btn]').on('click', function () {
+
+		var $type = $(this).closest('[data-tabs]').attr('data-tabs');
+
+		if ($type == 'toggle') {
+
+			if ($(this).hasClass('active')) {
+				closePanel.call($(this));
+			}
+			else {
+				togglePanel.call($(this));
+			}
+		}
+		else {
+			if (!$(this).hasClass('active')) {
+				togglePanel.call($(this));
+			}
+		}
+	});
 }());
 
+
+
+// ===== time cabinet =====
+
+(function () {
+	var check = document.querySelectorAll('.check');
+
+	if (check) {
+		for (var i = 0; i < check.length; i++) {
+			toggleInput.call(check[i]);
+			check[i].addEventListener('click', toggleInput);
+		}
+	}
+
+
+	function toggleInput() {
+		if (!this.querySelector('.check__input:checked')) {
+			this.nextElementSibling.style.display = 'none';
+		} else {
+			this.nextElementSibling.style.display = 'flex';
+		}
+	}
+
+
+	initBtnDel();
+
+	function initBtnDel() {
+		var btnDel = document.querySelectorAll('.btn-del');
+		if (btnDel) {
+
+			for (var i = 0; i < btnDel.length; i++) {
+				btnDel[i].addEventListener('click', function () {
+					var delElem = this.parentElement;
+					var delElemParent = delElem.parentElement;
+					delElemParent.removeChild(delElem);
+
+					var child = delElemParent.children;
+					if (child.length > 2) {
+						delElemParent.lastElementChild.previousElementSibling.insertAdjacentHTML('beforeEnd', '<button class="btn btn-del icon-close" type="button"></button>');
+						initBtnDel();
+
+					}
+				});
+			}
+		}
+	}
+
+
+	var btnAdd = document.querySelectorAll('.btn-add');
+	if (btnAdd) {
+		for (var i = 0; i < btnAdd.length; i++) {
+
+			btnAdd[i].addEventListener('click', function () {
+				var parent = this.parentElement;
+				var btnDel = parent.querySelector('.btn-del');
+				if (btnDel) {
+					btnDel.parentElement.removeChild(btnDel);
+				}
+
+				var elemClone = parent.children[0].cloneNode(true);
+				this.insertAdjacentElement('beforeBegin', elemClone);
+				elemClone.insertAdjacentHTML('beforeEnd', '<button class="btn btn-del icon-close" type="button"></button>');
+				initBtnDel();
+			});
+		}
+	}
+}());
+
+
+
+// ===== adaptiv cabinet =====
+
+(function () {
+	var itemsMove = document.querySelectorAll('[data-move]');
+
+	if (itemsMove) {
+
+		var mql = window.matchMedia('(max-width: 1199px)');
+
+		mql.addListener(move);
+		// mql.addEventListener('change', move);
+
+		move(mql);
+
+		function move(mql) {
+
+			for (let i = 0; i < itemsMove.length; i++) {
+				var itemMove = itemsMove[i];
+				var itemNamber = itemMove.getAttribute('data-move');
+				var startMove = document.querySelector('[data-start="' + itemNamber + '"]');
+				var whereMove = document.querySelector('[data-where="' + itemNamber + '"]');
+
+				if (mql.matches) {
+					whereMove.appendChild(itemMove);
+				} else {
+					startMove.appendChild(itemMove);
+				}
+			}
+		}
+	}
+}());

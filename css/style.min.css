@@ -2087,6 +2087,7 @@ input:focus::placeholder {
 
 .form__input.invalid {
   border: 2px solid #eb5757;
+  transition: .2s ease 0s;
 }
 
 .form__item .error {
@@ -2094,6 +2095,12 @@ input:focus::placeholder {
   font-size: 14px;
   line-height: 19px;
   color: #eb5757;
+  opacity: 0;
+  transition: .2s ease 0s;
+}
+
+.form__item .error.active {
+  opacity: 1;
 }
 
 .form__item .error::before {
