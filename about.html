@@ -84,10 +84,11 @@
 			<a class="lang__link active" href="#!">RU</a>
 		</div>
 
-		<a class="user-link-mob " href="#!">
-			<img class="user-img" src="img/user.svg" width="" height="" alt=""> 
-		</a>
-		<a class="user-link btn" href="#!">Войти</a>
+
+		<button class="user-link " onclick="openDialog('dialog-in', this)">
+			 <span>Войти</span>
+			<img src="img/user.svg" width="" height="" alt="">
+		</button>
 		
 	
 		
@@ -336,18 +337,153 @@
 </div><!-- wrapper -->	
 
 
-<div class="dialog-backdrop" onclick="clickBtnClose(this)">
-  <div role="dialog" id="dialog-" aria-labelledby="dialog_label" aria-modal="true" class="hidden">
-    <div class="modal">
-  
-        <button onclick="closeDialog(this)" class="modal__btn-close" aria-label="Close">
-          <!-- <svg class="icon modal__icon-close"><use xlink:href="icon.svg#icon-close"></use></svg> -->
-        </button>
-  
-  
-    </div>  
+
+<!-- Авторизация  -->
+
+<div class="dialog-backdrop dialog-backdrop-1" onclick="clickBtnClose(this)">
+  <div role="dialog" id="dialog-in" aria-labelledby="dialog-1_label" aria-modal="true" class="hidden">
+    <div class="modal-1">
+
+      <button class="modal-1__close icon-close" onclick="closeDialog(this)" aria-label="Close"></button>
+
+      <div class="modal-1__icon "><span class="icon-user-plus"></span></div>
+
+      <div class="modal-1__title" id="dialog-1_label">Авторизация</div>
+
+      <form class="form-1" action="#" method="post" novalidate>
+
+        <div class=" form__item modal-1__item col-12">
+          <input class="form__input" type="tel" name="tel" placeholder="Телефон" aria-describedby="tel-4-error" required aria-required="true"/>
+          <span class="error" id="tel-4-error" aria-live="assertive"></span>
+        </div>
+
+        <div class="form__item modal-1__item col-12 icon-eye-close">
+          <input class="form__input " type="password" name="password" placeholder="Пароль" aria-describedby="pass-4-error" required aria-required="true"/>
+          <span class="error" id="pass-4-error" aria-live="assertive"></span>
+        </div>
+
+        <div class="modal-1__row">
+          <a class="modal-1__btn" href="#!">Забыли пароль?</a>
+          <button class="modal-1__btn"  onclick="replaceDialog('dialog-reg')" type="button">Еще нет аккаунта?</button>
+        </div>
+        <button class="modal-1__submit btn-green" type="submit" value="">оставить отзыв</button>
+      </form>
+
+
+    </div>
   </div>
+</div>
+
+
+<!-- Регистрация -->
+
+<div class="dialog-backdrop dialog-backdrop-1" onclick="clickBtnClose(this)">
+  <div role="dialog" id="dialog-reg" aria-labelledby="dialog-1_label" aria-modal="true" class="hidden">
+    <div class="modal-1">
+
+      <button class="modal-1__close icon-close" onclick="closeDialog(this)" aria-label="Close"></button>
+
+      <div class="modal-1__icon "><span class="icon-user-plus"></span></div>
+
+      <div class="modal-1__title" id="dialog-1_label">Регистрация</div>
+
+      <form class="form-1" action="#" method="post" novalidate>
+
+        <div class=" form__item modal-1__item col-12">
+          <input class="form__input" type="tel" name="tel" placeholder="Телефон" aria-describedby="tel-2-error" required aria-required="true"/>
+          <span class="error" id="tel-2-error" aria-live="assertive"></span>
+        </div>
+
+        <div class="form__item modal-1__item col-12 icon-eye-close">
+          <input class="form__input " type="password" name="password" placeholder="Пароль" aria-describedby="pass-2-error" required aria-required="true"/>
+          <span class="error" id="pass-2-error" aria-live="assertive"></span>
+        </div>
+
+        <div class="form__item modal-1__item col-12 icon-eye-close">
+          <input class="form__input " type="password" name="password1" placeholder="Подтвердить пароль" aria-describedby="pass-3-error" required aria-required="true"/>
+          <span class="error" id="pass-3-error" aria-live="assertive"></span>
+        </div>
+
+        <button class="modal-1__submit btn-green" type="submit" value="">оставить отзыв</button>
+
+        <button class="modal-1__btn modal-1__btn--center" onclick="replaceDialog('dialog-in')" type="button">Уже есть аккаунт?</button>
+      </form>
+
+
+    </div>
   </div>
+</div>
+
+
+<!-- Заявить права -->
+
+<div class="dialog-backdrop dialog-backdrop-1" onclick="clickBtnClose(this)">
+  <div role="dialog" id="dialog-ownership" aria-labelledby="dialog-1_label" aria-modal="true" class="hidden">
+    <div class="modal-1">
+
+      <button class="modal-1__close icon-close" onclick="closeDialog(this)" aria-label="Close"></button>
+
+      <div class="modal-1__icon "><span class="icon-hand"></span></div>
+
+      <div class="modal-1__title" id="dialog-1_label">Заявление прав на “Название магазина”</div>
+
+      <form class="form-1" data-message="reply" action="send.php" method="post" enctype="multipart/form-data" novalidate>
+
+        <div class=" form__item modal-1__item col-12">
+          <input class="form__input" type="tel" name="tel" placeholder="Телефон" aria-describedby="tel-1-error" required aria-required="true"/>
+          <span class="error" id="tel-1-error" aria-live="assertive"></span>
+        </div>
+
+        <div class="form__item modal-1__item col-12 icon-eye-close">
+          <input class="form__input " type="password" name="password2" placeholder="Пароль" aria-describedby="pass-2-error" required aria-required="true"/>
+          <span class="error" id="pass-2-error" aria-live="assertive"></span>
+        </div>
+
+        <div class="file">
+          <input class="file__input visuallyhidden" id="input-file" type="file" name="userfile[]" multiple>
+        
+          <label class="file__label icon-plus" for="input-file">
+            Прикрепить документы, 
+          </label>
+          <div class="file__text">подтверждающие право собственности</div>
+          <div class="file__name"></div>
+        </div>
+        
+
+        <button class="modal-1__submit btn-green" type="submit" value="">Заявить права</button>
+      </form>
+
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ответ -->
+
+<div class="dialog-backdrop dialog-backdrop-1 dialog-backdrop-reply" onclick="clickBtnClose(this)">
+  <div role="dialog" id="dialog-reply" aria-labelledby="dialog-1_label" aria-modal="true" class="hidden">
+    <div class="modal-1">
+
+      <button class="modal-1__close icon-close" onclick="closeDialog(this)" aria-label="Close"></button>
+
+      <div class="modal-1__icon "><span class="icon-time"></span></div>
+
+      <div class="modal-1__title" id="dialog-1_label">Заявление принято и будет рассмотрено до 
+        <span class="modal-1__time" data-message-text></span>
+      </div>
+        
+
+        <div class="modal-1__text1">После подтверждения ваших прав, юр.лицо будет отображаться в каталоге, и Вы получите доступ к редактированию его данных в личном кабинете</div>
+
+      <form class="form-1" action="#" method="post" enctype="multipart/form-data" novalidate>
+        <button class="modal-1__submit btn-green" onclick="closeDialog(this)" type="button" value="">Хорошо</button>
+      </form>
+
+
+    </div>
+  </div>
+</div>
 
 
 <!-- up -->

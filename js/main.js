@@ -913,6 +913,31 @@ $('.store__slider').slick({
 
 
 
+// ===== focus rating =====
+
+(function () {
+	// var box = document.querySelector('.rating__group');
+	var box = document.querySelector('.rating');
+	if (box) {
+		var input = box.querySelectorAll('input');
+
+		for (var i = 0; i < input.length; i++) {
+
+			input[i].addEventListener('focus', function () {
+				if (this.classList.contains('focus')) {
+					box.classList.add('focus');
+				}
+			});
+
+			input[i].addEventListener('blur', function () {
+				box.classList.remove('focus');
+			});
+		}
+	}
+}());
+
+
+
 // ====== validate and sendform ========
 
 (function () {
@@ -940,11 +965,11 @@ $('.store__slider').slick({
 		var error = this.parentElement.querySelector('.error');
 		this.classList.remove('invalid');
 		error.classList.remove('active');
-		error.addEventListener('transitionend', function() {
+		error.addEventListener('transitionend', function () {
 			if (!this.classList.contains('active')) {
-			this.innerHTML = '';
+				this.innerHTML = '';
 			}
-	 });
+		});
 	}
 
 	function check() {
@@ -964,8 +989,71 @@ $('.store__slider').slick({
 		}
 	}
 
-	function validate(e) {			e.preventDefault();
+	// rating-star
 
+	var rating = document.querySelector('.rating');
+
+	if (rating) {
+		var input = rating.querySelectorAll('input');
+
+		for (var i = 0; i < input.length; i++) {
+
+			input[i].addEventListener('focus', rezetRating);
+			input[i].addEventListener('blur', checkRating);
+		}
+	}
+
+	function rezetRating() {
+		var error = rating.nextElementSibling;
+		rating.classList.remove('invalid');
+		error.classList.remove('active');
+		error.addEventListener('transitionend', function () {
+			if (!this.classList.contains('active')) {
+				this.innerHTML = '';
+			}
+		});
+	}
+
+	function checkRating() {
+		var error = rating.nextElementSibling;
+		var input = rating.querySelector('[name="rating"]');
+
+		if (input.checked) {
+			rating.classList.add('invalid');
+			error.classList.add('active');
+			error.innerHTML = 'ошибка / заполните поле';
+
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	// end rating-star
+
+
+
+	function validate(e) {
+		var reg = this.querySelectorAll('input[required]');
+		var agree = this.querySelector('input[name="agree"]');
+		var countError = 0;
+		if (!agree || agree.checked) {
+
+			if (rating) {
+				countError += checkRating();
+			}
+			
+			for (var i = 0; i < reg.length; i++) {
+				var input = reg[i];
+				countError += check.call(input);
+				if (countError) {
+					e.preventDefault();
+				}
+			}
+		} else {
+			e.preventDefault();
+			countError++;
+		}
+		return countError;
 	}
 
 	function ajaxSend(e) {
@@ -993,6 +1081,7 @@ $('.store__slider').slick({
 		}
 	}
 }());
+
 
 
 
@@ -1039,30 +1128,6 @@ $('.store__slider').slick({
 		$btn.next().not($(this).next()).slideUp(500);
 		$(this).toggleClass('active').next().slideToggle(500);
 	});
-}());
-
-
-
-// ===== focus rating =====
-
-(function () {
-	var box = document.querySelector('.rating__group');
-	if (box) {
-		var input = box.querySelectorAll('input');
-
-		for (var i = 0; i < input.length; i++) {
-
-			input[i].addEventListener('focus', function () {
-				if (this.classList.contains('focus')) {
-					box.classList.add('focus');
-				}
-			});
-
-			input[i].addEventListener('blur', function () {
-				box.classList.remove('focus');
-			});
-		}
-	}
 }());
 
 
