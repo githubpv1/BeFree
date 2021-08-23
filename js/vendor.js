@@ -709,3 +709,290 @@ aria.Utils.bindMethods = function (object /* , ...methodNames */) {
 };
 
 
+// ===== accordion  =====
+
+(function () {
+
+	var accord = document.querySelectorAll('[data-accord]');
+	if (accord) {
+
+		for (let i = 0; i < accord.length; i++) {
+			var accordion = accord[i];
+
+			var allowMultiple = accordion.hasAttribute('data-allow-multiple');
+			var allowToggle = (allowMultiple) ? allowMultiple : accordion.hasAttribute('data-allow-toggle');
+
+			var triggers = Array.prototype.slice.call(accordion.querySelectorAll('[data-btn]'));
+			accordion.addEventListener('click', change);
+
+			function change(event) {
+				var target = event.target;
+
+				if (target.hasAttribute('data-btn')) {
+					var isExpanded = target.getAttribute('aria-expanded') == 'true';
+					var active = accordion.querySelector('[aria-expanded="true"]');
+
+					if (!allowMultiple && active && active !== target) {
+						active.setAttribute('aria-expanded', 'false');
+						document.getElementById(active.getAttribute('aria-controls')).style.height = "0px";
+
+						if (!allowToggle) {
+							active.removeAttribute('aria-disabled');
+						}
+					}
+
+					if (!isExpanded) {
+						target.setAttribute('aria-expanded', 'true');
+						var pan = document.getElementById(target.getAttribute('aria-controls'));
+						pan.style.height = pan.scrollHeight + 'px';
+
+						if (!allowToggle) {
+							target.setAttribute('aria-disabled', 'true');
+						}
+					}
+					else if (allowToggle && isExpanded) {
+						target.setAttribute('aria-expanded', 'false');
+						document.getElementById(target.getAttribute('aria-controls')).style.height = "0px";
+					}
+					event.preventDefault();
+				}
+			};
+
+			accordion.addEventListener('keydown', function (event) {
+				var target = event.target;
+				var key = event.which.toString();
+
+				// 33 = Page Up, 34 = Page Down
+				var ctrlModifier = (event.ctrlKey && key.match(/33|34/));
+
+				// 38 = Up, 40 = Down
+				if (target.hasAttribute('data-btn')) {
+					if (key.match(/38|40/) || ctrlModifier) {
+						var index = triggers.indexOf(target);
+						var direction = (key.match(/34|40/)) ? 1 : -1;
+						var length = triggers.length;
+						var newIndex = (index + length + direction) % length;
+
+						triggers[newIndex].focus();
+
+						event.preventDefault();
+					}
+					// 35 = End, 36 = Home keyboard operations
+					else if (key.match(/35|36/)) {
+						switch (key) {
+							case '36':
+								triggers[0].focus();
+								break;
+							case '35':
+								triggers[triggers.length - 1].focus();
+								break;
+						}
+						event.preventDefault();
+					}
+				}
+			});
+
+			var accordBtn = accordion.querySelectorAll('[data-btn]');
+			for (let i = 0; i < accordBtn.length; i++) {
+				var trigger = accordBtn[i];
+
+				trigger.addEventListener('focus', function (event) {
+					accordion.classList.add('focus');
+				});
+
+				trigger.addEventListener('blur', function (event) {
+					accordion.classList.remove('focus');
+				});
+			}
+
+			if (!allowToggle) {
+				var expanded = accordion.querySelector('[aria-expanded="true"]');
+
+				if (expanded) {
+					expanded.setAttribute('aria-disabled', 'true');
+				}
+			}
+
+			var oupen = accordion.querySelector('[aria-expanded="true"]');
+			if (oupen) {
+				var panel = document.getElementById(oupen.getAttribute('aria-controls'));
+				panel.style.height = panel.scrollHeight + 'px';
+			}
+		}
+	}
+}());
+
+
+// ===== tabs-W3 =====
+
+(function () {
+
+	var tabsW3 = document.querySelectorAll('[data-tabsW3]');
+	if (tabsW3) {
+		for (let i = 0; i < tabsW3.length; i++) {
+
+			var tabW3 = tabsW3[i];
+			var tablist = tabW3.querySelector('[role="tablist"]');
+			var tabs = tabW3.querySelectorAll('[role="tab"]');
+			var panels = tabW3.querySelectorAll('[role="tabpanel"]');
+
+			function activateTab(tab, setFocus) {
+				setFocus = setFocus || true;
+				deactivateTabs();
+
+				tab.removeAttribute('tabindex');
+				tab.setAttribute('aria-selected', 'true');
+				tab.classList.add('active');
+
+				var controls = tab.getAttribute('aria-controls');
+
+				document.getElementById(controls).removeAttribute('hidden');
+
+				if (setFocus) {
+					tab.focus();
+				};
+			};
+
+			function deactivateTabs() {
+				for (t = 0; t < tabs.length; t++) {
+					tabs[t].setAttribute('tabindex', '-1');
+					tabs[t].setAttribute('aria-selected', 'false');
+					tabs[t].classList.remove('active');
+					tabs[t].removeEventListener('focus', focusEventHandler);
+				};
+
+				for (p = 0; p < panels.length; p++) {
+					panels[p].setAttribute('hidden', 'hidden');
+				};
+			};
+
+			var keys = {
+				end: 35,
+				home: 36,
+				left: 37,
+				up: 38,
+				right: 39,
+				down: 40
+			};
+
+			var direction = {
+				37: -1,
+				38: -1,
+				39: 1,
+				40: 1
+			};
+
+			for (i = 0; i < tabs.length; ++i) {
+				addListeners(i);
+			};
+
+			function addListeners(index) {
+				tabs[index].addEventListener('click', clickEventListener);
+				tabs[index].addEventListener('keydown', keydownEventListener);
+				tabs[index].addEventListener('keyup', keyupEventListener);
+
+				tabs[index].index = index;
+			};
+
+			function clickEventListener(event) {
+				var tab = event.target;
+				activateTab(tab, false);
+			};
+
+			function keydownEventListener(event) {
+				var key = event.keyCode;
+
+				switch (key) {
+					case keys.end:
+						event.preventDefault();
+						activateTab(tabs[tabs.length - 1]);
+						break;
+					case keys.home:
+						event.preventDefault();
+						activateTab(tabs[0]);
+						break;
+
+					case keys.up:
+					case keys.down:
+						determineOrientation(event);
+						break;
+				};
+			};
+
+			function keyupEventListener(event) {
+				var key = event.keyCode;
+
+				switch (key) {
+					case keys.left:
+					case keys.right:
+						determineOrientation(event);
+						break;
+				};
+			};
+
+			function determineOrientation(event) {
+				var key = event.keyCode;
+				var vertical = tablist.getAttribute('aria-orientation') == 'vertical';
+				var proceed = false;
+
+				if (vertical) {
+					if (key === keys.up || key === keys.down) {
+						event.preventDefault();
+						proceed = true;
+					};
+				} else {
+					if (key === keys.left || key === keys.right) {
+						proceed = true;
+					};
+				};
+
+				if (proceed) {
+					switchTabOnArrowPress(event);
+				};
+			};
+
+			function switchTabOnArrowPress(event) {
+				var pressed = event.keyCode;
+
+				for (x = 0; x < tabs.length; x++) {
+					tabs[x].addEventListener('focus', focusEventHandler);
+				};
+
+				if (direction[pressed]) {
+					var target = event.target;
+					if (target.index !== undefined) {
+						if (tabs[target.index + direction[pressed]]) {
+							tabs[target.index + direction[pressed]].focus();
+						} else if (pressed === keys.left || pressed === keys.up) {
+							focusLastTab();
+						} else if (pressed === keys.right || pressed == keys.down) {
+							focusFirstTab();
+						};
+					};
+				};
+			};
+
+			function focusFirstTab() {
+				tabs[0].focus();
+			};
+
+			function focusLastTab() {
+				tabs[tabs.length - 1].focus();
+			};
+
+			function focusEventHandler(event) {
+				var target = event.target;
+
+				setTimeout(checkTabFocus, 30, target);
+			};
+
+			function checkTabFocus(target) {
+				focused = document.activeElement;
+
+				if (target === focused) {
+					activateTab(target, false);
+				};
+			};
+		}
+	}
+}());
