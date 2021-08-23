@@ -560,6 +560,66 @@ google.maps.event.addDomListener(window, "load", initMap);
 
 
 
+// store__slider
+
+$('.store__slider').slick({
+	prevArrow: $('.store__prev'),
+	nextArrow: $('.store__next'),
+	// infinite: false,
+	slidesToShow: 1,
+	slidesToScroll: 1,
+	dots: true,
+});
+
+
+
+// stock__slider
+
+(function () {
+	var mq = window.matchMedia('(min-width: 1350px)');
+
+	mq.addListener(startSlider);
+
+	function startSlider() {
+		if (mq.matches) {
+			$('.stock__slider').slick({
+				prevArrow: $('.stock__prev'),
+				nextArrow: $('.stock__next'),
+				// infinite: false,
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				dots: true,
+			});
+		} else {
+			if ($('.stock__slider').hasClass('slick-initialized')) {
+				$('.stock__slider').slick('unslick');
+			}
+		}
+	}
+
+
+	var target = document.querySelector('.stock');
+
+	if (target) {
+
+		var config = {
+			attributes: true,
+			attributeFilter: ['style'],
+		}
+
+		var observer = new MutationObserver(onMutate);
+
+		observer.observe(target, config);
+
+		function onMutate() {
+			startSlider();
+			observer.disconnect();
+		}
+	}
+}());
+
+
+
 // ==== select gibrid-4 ====
 
 (function () {
@@ -845,68 +905,6 @@ google.maps.event.addDomListener(window, "load", initMap);
 				parent.classList.remove('oupen');
 				parent.classList.remove('focus');
 			});
-		}
-	}
-}());
-
-
-
-
-// store__slider
-
-$('.store__slider').slick({
-	prevArrow: $('.store__prev'),
-	nextArrow: $('.store__next'),
-	// infinite: false,
-	slidesToShow: 1,
-	slidesToScroll: 1,
-	dots: true,
-});
-
-
-
-// stock__slider
-
-(function () {
-	var mq = window.matchMedia('(min-width: 1350px)');
-
-	mq.addListener(startSlider);
-
-	function startSlider() {
-		if (mq.matches) {
-			console.log('hi');
-			$('.stock__slider').slick({
-				prevArrow: $('.stock__prev'),
-				nextArrow: $('.stock__next'),
-				// infinite: false,
-				slidesToShow: 1,
-				slidesToScroll: 1,
-				dots: true,
-			});
-		} else {
-			if ($('.stock__slider').hasClass('slick-initialized')) {
-				$('.stock__slider').slick('unslick');
-			}
-		}
-	}
-
-
-	var target = document.querySelector('.stock');
-
-	if (target) {
-
-		var config = {
-			attributes: true,
-			attributeFilter: ['style'],
-		}
-
-		var observer = new MutationObserver(onMutate);
-
-		observer.observe(target, config);
-
-		function onMutate() {
-			startSlider();
-			observer.disconnect();
 		}
 	}
 }());
