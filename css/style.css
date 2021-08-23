@@ -4248,7 +4248,7 @@ input:focus::placeholder {
 @media (min-width: 768px) {
   .shop__map {
     height: 820px;
-    margin: -80px -20px -155px -20px;
+    margin: -80px -20px -200px -20px;
   }
 }
 
