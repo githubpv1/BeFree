@@ -163,6 +163,7 @@ objectFitImages();
 
 
 
+
 // ===== show map & filter ===== 
 
 (function () {
@@ -562,14 +563,18 @@ google.maps.event.addDomListener(window, "load", initMap);
 
 // store__slider
 
-$('.store__slider').slick({
-	prevArrow: $('.store__prev'),
-	nextArrow: $('.store__next'),
-	// infinite: false,
-	slidesToShow: 1,
-	slidesToScroll: 1,
-	dots: true,
+(function () {
+$(document).ready(function() {
+	$('.store__slider').slick({
+		prevArrow: $('.store__prev'),
+		nextArrow: $('.store__next'),
+		// infinite: false,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		dots: true,
+	});
 });
+}());
 
 
 
@@ -1114,7 +1119,6 @@ $('.store__slider').slick({
 
 
 
-
 // ===== выбрано файлов =====
 
 (function () {
@@ -1273,6 +1277,8 @@ $('.store__slider').slick({
 		}
 	}
 }());
+
+
 
 
 
@@ -1444,4 +1450,7 @@ $('.store__slider').slick({
 		}
 	});
 }());
+
+
+
 
