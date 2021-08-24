@@ -564,20 +564,7 @@ google.maps.event.addDomListener(window, "load", initMap);
 // store__slider
 
 (function () {
-
-	var options = {
-    threshold: 0.1
-}
-
-var observer = new IntersectionObserver(startSlider, options);
-
-var target = document.querySelector('.store__slider');
-observer.observe(target);
-
-
-// $(document).ready(function() {
-	function startSlider(entries, observer) {
-
+$(document).ready(function() {
 	$('.store__slider').slick({
 		prevArrow: $('.store__prev'),
 		nextArrow: $('.store__next'),
@@ -586,9 +573,7 @@ observer.observe(target);
 		slidesToScroll: 1,
 		dots: true,
 	});
-}
-// });
-
+});
 }());
 
 
